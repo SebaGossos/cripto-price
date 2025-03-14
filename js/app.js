@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', submitForm);
 
-    cryptoCurrenciesSelect.addEventListener('change', readValue)
+    cryptoCurrenciesSelect.addEventListener('change', readValue);
 
-    coinSelect.addEventListener('change', readValue)
+    coinSelect.addEventListener('change', readValue);
     
 })
 
@@ -47,8 +47,6 @@ function selectCryptoCurrency( cryptoCurrencies ) {
 
 function readValue( e ) {
     objSearch[e.target.name] = e.target.value;
-
-    console.log( objSearch )
 }
 
 function submitForm( e ) {
@@ -84,5 +82,15 @@ function showAlert( message ) {
 
 function consultApi() {
     const { coin, cryptocurrency } = objSearch;
+    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${ cryptocurrency }&tsyms=${ coin }`;
     
+    fetch( url )
+        .then( res => res.json() )
+        .then( res => showQuotitation( res.DISPLAY[cryptocurrency][coin] ) )
+
+}
+
+
+function showQuotitation( quotitation ) {
+    console.log( quotitation )
 }
