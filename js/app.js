@@ -86,11 +86,41 @@ function consultApi() {
     
     fetch( url )
         .then( res => res.json() )
-        .then( res => showQuotitation( res.DISPLAY[cryptocurrency][coin] ) )
+        .then( res => showQuotation( res.DISPLAY[cryptocurrency][coin] ) )
 
 }
 
 
-function showQuotitation( quotitation ) {
-    console.log( quotitation )
+function showQuotation( quotation ) {
+    const { PRICE, HIGHDAY, LOWDAY, CHANGEPCT24HOUR, LASTUPDATE } = quotation;
+
+    cleanHTML();
+    
+    console.log( PRICE )
+    
+    const price = document.createElement('P');
+    price.classList.add('precio');
+    price.innerHTML = `El precio es de: <span>${ PRICE }</span>`;
+    
+    const priceHigh = document.createElement('P');
+    priceHigh.innerHTML = `El precio mas alto del día es: <span>${ HIGHDAY }</span>`;
+    
+    const priceLow = document.createElement('P');
+    priceLow.innerHTML = `El precio mas bajo del día es: <span>${ LOWDAY }</span>`;
+    
+    const priceChange = document.createElement('P');
+    priceChange.innerHTML = `La variacion del día es: <span>${ CHANGEPCT24HOUR }</span>`;
+    
+    const priceUpdated = document.createElement('P');
+    priceUpdated.innerHTML = `La ultima acutalización de su precio es: <span>${ LASTUPDATE }</span>`;
+
+
+    result.append( price, priceHigh, priceLow, priceChange, priceUpdated );
+
+}
+
+function cleanHTML() {
+    while( result.firstChild ) {
+        result.removeChild( result.firstChild );
+    }
 }
