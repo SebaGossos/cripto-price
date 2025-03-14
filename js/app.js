@@ -1,4 +1,13 @@
 const cryptoCurrenciesSelect = document.querySelector('#criptomonedas');
+const coinSelect = document.querySelector('#moneda');
+const form = document.querySelector('#formulario');
+const result = document.querySelector('#resultado');
+
+
+const objSearch = {
+    coin: '',
+    cryptocurrency: '',
+}
 
 // create Promise
 const obtainCryptoCurrency = cryptoCurrencies => new Promise( resolve => {
@@ -7,6 +16,13 @@ const obtainCryptoCurrency = cryptoCurrencies => new Promise( resolve => {
 
 document.addEventListener('DOMContentLoaded', () => {
     consultCryptocurrencies();
+
+    form.addEventListener('submit', submitForm);
+
+    cryptoCurrenciesSelect.addEventListener('change', readValue)
+
+    coinSelect.addEventListener('change', readValue)
+    
 })
 
 function consultCryptocurrencies() {
@@ -27,4 +43,46 @@ function selectCryptoCurrency( cryptoCurrencies ) {
         option.textContent = FullName;
         cryptoCurrenciesSelect.appendChild( option )
     });
+}
+
+function readValue( e ) {
+    objSearch[e.target.name] = e.target.value;
+
+    console.log( objSearch )
+}
+
+function submitForm( e ) {
+    e.preventDefault();
+
+    const { coin, cryptocurrency } = objSearch;
+    
+    if ( coin.trim() === '' || cryptocurrency.trim() === '') {
+        showAlert('Ambos campos son obligatorios');
+        return;
+    }
+    // query the API to get the result
+    consultApi();
+}
+
+function showAlert( message ) {
+    
+    const existMessage = document.querySelector('.error');
+    if( existMessage ) return;
+    
+    const divMessage = document.createElement('P');
+    divMessage.classList.add('error');
+    divMessage.textContent = message;
+    
+    form.appendChild(divMessage)
+    
+    setTimeout(() => {
+        divMessage.remove();
+    }, 3000)
+    
+    
+}
+
+function consultApi() {
+    const { coin, cryptocurrency } = objSearch;
+    
 }
